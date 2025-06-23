@@ -72,3 +72,5 @@ packages/react-devtools-timeline/dist
 data
 dist
 bin
+cmd/mock-server/__debug_bin1864308692
+cmd/mcp-gateway/__debug_bin2319474261
