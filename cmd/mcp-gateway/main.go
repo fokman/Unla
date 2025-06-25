@@ -117,6 +117,7 @@ var (
 )
 
 func init() {
+	fmt.Println("1. 初始化配置信息")
 	rootCmd.PersistentFlags().StringVarP(&configPath, "conf", "c", cnst.MCPGatewayYaml, "path to configuration file, like /etc/unla/mcp-gateway.yaml")
 	rootCmd.PersistentFlags().StringVar(&pidFile, "pid", "", "path to PID file")
 	rootCmd.AddCommand(versionCmd)
@@ -125,6 +126,7 @@ func init() {
 }
 
 func run() {
+	fmt.Println("2. run函数执行")
 	ctx, cancel := context.WithCancel(context.Background())
 
 	// Load configuration first

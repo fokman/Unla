@@ -156,7 +156,7 @@ func (s *Server) handleSSE(c *gin.Context) {
 			}
 			c.Writer.Flush()
 		case <-c.Request.Context().Done():
-			s.logger.Info("SSE client disconnected",
+			s.logger.Info("SSE client has done",
 				zap.String("session_id", sessionID),
 				zap.String("remote_addr", c.Request.RemoteAddr),
 			)

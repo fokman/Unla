@@ -45,7 +45,7 @@ func (s *Server) loggerMiddleware() gin.HandlerFunc {
 		}
 
 		// Record request start
-		logger.Info("request started")
+		// logger.Info("request started")
 
 		// Save logger in context for later use
 		c.Set("logger", logger)
