@@ -1,6 +1,7 @@
 package config
 
 import (
+	"log"
 	"time"
 
 	"github.com/ifuryst/lol"
@@ -158,6 +159,16 @@ func (t *ToolConfig) ToToolSchema() mcp.ToolSchema {
 			properties[k] = v
 		}
 	}
+	//打印ToolSchema
+	log.Println("ToolSchema:", mcp.ToolSchema{
+		Name:        t.Name,
+		Description: t.Description,
+		InputSchema: mcp.ToolInputSchema{
+			Type:       "object",
+			Properties: properties,
+			Required:   required,
+		},
+	})
 
 	return mcp.ToolSchema{
 		Name:        t.Name,

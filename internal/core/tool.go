@@ -12,9 +12,9 @@ import (
 	"net/url"
 	"strings"
 
-	"github.com/gin-gonic/gin"
 	"github.com/amoylab/unla/internal/mcp/session"
 	"github.com/amoylab/unla/pkg/mcp"
+	"github.com/gin-gonic/gin"
 	"golang.org/x/net/proxy"
 
 	"github.com/amoylab/unla/internal/common/config"
@@ -275,7 +275,7 @@ func (s *Server) fetchHTTPToolList(conn session.Connection) ([]mcp.ToolSchema, e
 
 func (s *Server) callHTTPTool(c *gin.Context, req mcp.JSONRPCRequest, conn session.Connection, params mcp.CallToolParams) *mcp.CallToolResult {
 	// Log tool invocation at info level
-	s.logger.Info("invoking HTTP tool",
+	s.logger.Warn("invoking HTTP tool",
 		zap.String("tool", params.Name),
 		zap.String("session_id", conn.Meta().ID),
 		zap.String("remote_addr", c.Request.RemoteAddr))

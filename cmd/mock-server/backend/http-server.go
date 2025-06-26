@@ -2,6 +2,8 @@ package backend
 
 import (
 	"context"
+	"encoding/json"
+	"log"
 	"net/http"
 	"os"
 	"os/signal"
@@ -10,6 +12,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
+	"github.com/joho/godotenv"
 	"go.uber.org/zap"
 )
 
@@ -47,6 +50,10 @@ type HTTPServer struct {
 }
 
 func NewHTTPServer() *HTTPServer {
+	// 加载 .env 文件
+	if err := godotenv.Load(); err != nil {
+		log.Println("No .env file found, using environment variables directly")
+	}
 	// Initialize logger
 	logger, err := zap.NewProduction()
 	if err != nil {
@@ -138,6 +145,32 @@ func NewHTTPServer() *HTTPServer {
 			"message":   "avatar updated",
 			"avatarUrl": avatarURL,
 		})
+	})
+
+	// 获取天气 API Key
+	weatherAPIKey := os.Getenv("WEATHER_API_KEY") // 从环境变量获取
+	if weatherAPIKey == "" {
+		logger.Fatal("WEATHER_API_KEY not set in environment")
+	}
+
+	router.GET("/weather", func(c *gin.Context) {
+		city := c.DefaultQuery("city", "110101")
+
+		weatherURL := "https://restapi.amap.com/v3/weather/weatherInfo?city=" + city + "&key=" + weatherAPIKey
+		resp, err := http.Get(weatherURL)
+		if err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to fetch weather data"})
+			return
+		}
+		defer resp.Body.Close()
+
+		var result map[string]interface{}
+		if err := json.NewDecoder(resp.Body).Decode(&result); err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to parse response"})
+			return
+		}
+
+		c.JSON(http.StatusOK, result)
 	})
 
 	return &HTTPServer{

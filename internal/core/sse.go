@@ -395,6 +395,8 @@ func (s *Server) handlePostMessage(c *gin.Context, conn session.Connection) {
 		switch protoType {
 		case cnst.BackendProtoHttp:
 			result = s.callHTTPTool(c, req, conn, params)
+			//打印日志
+			s.logger.Warn("1. 开始准备调用HttpTool", zap.Any("params", params))
 		case cnst.BackendProtoStdio, cnst.BackendProtoSSE, cnst.BackendProtoStreamable:
 			transport := s.state.GetTransport(conn.Meta().Prefix)
 			if transport == nil {

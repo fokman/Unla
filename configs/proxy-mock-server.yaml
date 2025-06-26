@@ -28,6 +28,7 @@ servers:
       - "get_user_by_email"
       - "update_user_preferences"
       - "update_user_avatar"
+      - "weather"
     config:
       Cookie: 123
       Authorization: 'Bearer {{ env "AUTH_TOKEN" }}'
@@ -205,3 +206,31 @@ tools:
         "message": "{{.Response.Data.message}}",
         "avatarUrl": "{{.Response.Data.avatarUrl}}"
       }
+  - name: "weather"
+    description: "获取天气"
+    method: "GET"
+    endpoint: "http://localhost:5236/weather"
+    headers:
+      Content-Type: "application/json"
+    responseBody: |-
+      {
+        "status": "{{.Response.Data.status}}",
+        "count": "{{.Response.Data.count}}",
+        "info": "{{.Response.Data.info}",
+        "infocode": "{{.Response.Data.infocode}}",
+        "lives": [
+          {
+            "province": "{{.Response.Data.lives.province}}",
+            "city": "{{.Response.Data.lives.city}}",
+            "adcode": "{{.Response.Data.lives.adcode}}",
+            "weather": "{{.Response.Data.lives.weather}}",
+            "temperature": "{{.Response.Data.lives.temperature}}",
+            "winddirection": "{{.Response.Data.lives.winddirection}}",
+            "windpower": "{{.Response.Data.lives.windpower}}",
+            "humidity": "{{.Response.Data.lives.humidity}}",
+            "reporttime": "{{.Response.Data.lives.reporttime}}",
+            "temperature_float": "{{.Response.Data.lives.temperature_float}}",
+            "humidity_float": "{{.Response.Data.lives.humidity_float}}"
+          }
+        ]
+      } 

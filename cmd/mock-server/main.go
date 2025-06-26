@@ -9,9 +9,9 @@ import (
 
 	"go.uber.org/zap"
 
-	"github.com/mark3labs/mcp-go/server"
 	"github.com/amoylab/unla/cmd/mock-server/backend"
 	"github.com/amoylab/unla/pkg/version"
+	"github.com/mark3labs/mcp-go/server"
 	"github.com/spf13/cobra"
 )
 
@@ -101,6 +101,7 @@ func startSSEServer(_ context.Context, addr string, errChan chan<- error) {
 
 	sseServer := server.NewSSEServer(mcpServer, server.WithBaseURL(fmt.Sprintf("http://localhost%s", sseAddr)))
 	logger.Info("Starting SSE server", zap.String("addr", fmt.Sprintf("http://localhost%s/sse", sseAddr)))
+	print("SSE server panic:%s", sseAddr)
 	if err := sseServer.Start(sseAddr); err != nil {
 		errChan <- fmt.Errorf("SSE server error: %w", err)
 	}
